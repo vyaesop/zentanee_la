@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<main class="main">
+    <section class="py-5 bg-light">
+        <div class="container">
+          <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
+            <div class="col-lg-6">
+              <h1 class="h2 text-uppercase mb-0">
+                {% if query %}
+                <h1 class="mb-15">{{query}}</h1>
+                {% else %}
+                <h3 class="mb-15">No searched item</h1>
+                {% endif %}</h1>
+            </div>
+            <div class="col-lg-6 text-lg-right">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-lg-end mb-0 px-0">
+                  <li class="breadcrumb-item"><a href="{% url 'store:home' %}">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'store:search' %}">Search</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">{{query}}</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+    <div class="container mb-30">
+        <div class="row">
+            <div class="col-12">
+                <div class="shop-product-fillter">
+                    <div class="totall-product">
+                        <p>We found <strong class="text-brand">{{products.count}}</strong> item{{products.count|pluralize:"s"}} for you!</p>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    {% if products %}
+                    {% for product in products %}
+                    
+                      <!-- PRODUCT-->
+                      <div class="col-lg-4 col-sm-6">
+                        <div class="product text-center">
+                          <div class="mb-3 position-relative">
+
+                            <div class="badge text-white badge-"></div>
+
+                            <a class="d-block" href="{% url 'store:product-detail' product.slug %}">
+                              {% if product.product_image %}
+                                <img class="img-fluid w-100" src="{{product.product_image.url}}" alt="{{product.title}}">
+                              {% else %}
+                                <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="{{product.title}}">
+                              {% endif %}
+                            </a>
+
+                            <div class="product-overlay">
+                              <ul class="mb-0 list-inline">
+                                <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#"><i class="far fa-heart"></i></a></li>
+                                <li class="list-inline-item m-0 p-0">
+                                  {% comment %} <a class="btn btn-sm btn-dark" href="{% url 'store:add-to-cart' %}">Add to cart</a> {% endcomment %}
+
+                                  <form action="{% url 'store:add-to-cart' %}">
+                                    <input type="hidden" name="prod_id" value="{{product.id}}" id="product_id">
+                                    <button type="submit" class="btn btn-sm btn-dark">Add to Cart</button>
+                                  </form>
+
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <h6> <a class="reset-anchor" href="{% url 'store:product-detail' product.slug %}">{{product.title}}</a></h6>
+                          <p class="small text-muted">{{product.price}} ETB</p>
+                        </div>
+                      </div>
+
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                <!--product grid-->
+                
+                
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
