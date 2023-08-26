@@ -211,7 +211,7 @@ def add_to_cart(request):
     else:
         Cart(user=user, product=product).save()
     
-    return redirect('store:home')
+    return render(request, 'store/detail.html', {'product': product})
 
 
 @login_required
