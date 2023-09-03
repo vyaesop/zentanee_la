@@ -160,6 +160,7 @@ class RegistrationView(View):
         if form.is_valid():
             messages.success(request, "Congratulations! Registration Successful!")
             form.save()
+            return redirect('store:login')
         return render(request, 'account/register.html', {'form': form})
         
 
